@@ -1,0 +1,6 @@
+projectName: znats
+
+templates:
+  - template: templates/golem
+    values:
+      projectDescription: "Nats wrapper for Golem"
