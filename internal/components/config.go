@@ -1,6 +1,9 @@
 package nats
 
-import "github.com/spf13/viper"
+import (
+	"fmt"
+	"github.com/spf13/viper"
+)
 
 type CommonResourceConfig struct {
 	// Prefixes to be added to all stream, subjects, queues, etc
@@ -32,6 +35,13 @@ func (c ConfigNats) SetDefaults() {
 }
 
 func (c ConfigNats) Validate() error {
-	// TODO implement me
+	if c.ServerUrl == "" {
+		return fmt.Errorf("server url is required")
+	}
+
+	if c.ServiceName == "" {
+		return fmt.Errorf("service name is required")
+	}
+
 	return nil
 }
