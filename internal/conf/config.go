@@ -1,19 +1,30 @@
-package conf
+package nats
 
-import (
-	"github.com/spf13/viper"
-)
+import "github.com/spf13/viper"
 
-type Config struct {
-	Foo string `json:"foo"`
+type ConfigNats struct {
+	// ServerUrl is the url of the NATS server
+	ServerUrl string
+
+	// CredentialJWT (optional)
+	CredentialJWT string
+
+	// CredentialSeed (optional)
+	CredentialSeed string
+
+	// Prefixes to be added to all stream, subjects, queues, etc
+	ResourcePrefixes []string
+
+	// ServiceName is the name of the service
+	ServiceName string
 }
 
-func (c Config) SetDefaults() {
+func (c ConfigNats) SetDefaults() {
 	// TODO implement me
 	viper.SetDefault("foo", "bar")
 }
 
-func (c Config) Validate() error {
+func (c ConfigNats) Validate() error {
 	// TODO implement me
 	return nil
 }
