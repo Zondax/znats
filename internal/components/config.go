@@ -2,6 +2,13 @@ package nats
 
 import "github.com/spf13/viper"
 
+type CommonResourceConfig struct {
+	// Prefixes to be added to all stream, subjects, queues, etc
+	Prefixes []string
+	// Category is the category of the resource
+	Category ResourceCategory
+}
+
 type ConfigNats struct {
 	// ServerUrl is the url of the NATS server
 	ServerUrl string

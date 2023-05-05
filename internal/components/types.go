@@ -7,11 +7,6 @@ import (
 
 const EmptyString = ""
 
-type CommonResourceConfig struct {
-	Prefixes []string
-	Category ResourceCategory
-}
-
 type CommonResourceProperties struct {
 	// Category is the resource category to which this item belongs to
 	Category ResourceCategory
@@ -34,10 +29,10 @@ type ComponentNats struct {
 	NatsConn  *nats.Conn
 
 	// KV store map
-	MapKVStore map[string]nats.KeyValue
+	MapKVStore map[string]KVStoreNats
 
 	// Object Store map
-	MapObjectStore map[string]nats.ObjectStore
+	MapObjectStore map[string]ObjectStoreNats
 
 	// NatCLI
 	natCLI map[string]func(*nats.Msg)
