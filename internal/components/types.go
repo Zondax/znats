@@ -45,6 +45,14 @@ type ComponentNats struct {
 	OutputTopics map[string]*Topic
 }
 
+type PingResponse struct {
+	Name         string   `json:"name"`
+	InputTopics  []string `json:"input_topics"`
+	OutputTopics []string `json:"output_topics"`
+	CliCommands  []string `json:"cli_commands"`
+	Streams      []string `json:"streams"`
+}
+
 type Credential struct {
 	JWT  string
 	Seed string
