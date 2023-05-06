@@ -59,6 +59,17 @@ func newJetStreamServer(server string, credential Credential) (error, nats.JetSt
 	return nil, js, nc
 }
 
+func (c *ComponentNats) Shutdown() error {
+	err := c.NatsConn.Drain()
+	if err != nil {
+		zap.S().Errorf("Error while draining nats connection: %s", err.Error())
+		return err
+	}
+	c.NatsConn.Close()
+	zap.S().Infof("Successfully shutdown nats connection")
+	return nil
+}
+
 func GetResourcePrefix(prefixes []string, category ResourceCategory, separator string) string {
 	catString := ""
 	if category != NoCategory {
