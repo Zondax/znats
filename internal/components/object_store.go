@@ -19,28 +19,31 @@ func (c *ComponentNats) CreateObjectStore(config ConfigObjectStore) error {
 	nameHandle := config.ObjectStoreConfig.Bucket
 	fullBucketName := GetFullObjectStoreName(config)
 
-	// check if bucket exists
-	store, err := c.JsContext.ObjectStore(fullBucketName)
-
-	if err != nil || store == nil {
-		config.ObjectStoreConfig.Bucket = fullBucketName
-		store, err = c.JsContext.CreateObjectStore(config.ObjectStoreConfig)
-		if err != nil {
-			return err
-		}
-		return nil
-	}
-
 	objectStore := ObjectStoreNats{
 		CommonResourceProperties: CommonResourceProperties{
 			NameHandle: nameHandle,
 			Category:   config.Category,
 			fullName:   fullBucketName,
 		},
-		Store: store,
 	}
 
+	// check if bucket exists
+	store, err := c.JsContext.ObjectStore(fullBucketName)
+	if err == nil {
+		objectStore.Store = store
+		c.MapObjectStore[nameHandle] = objectStore
+		return nil
+	}
+
+	// store doesn't exist, create it
+	config.ObjectStoreConfig.Bucket = fullBucketName
+	store, err = c.JsContext.CreateObjectStore(config.ObjectStoreConfig)
+	if err != nil {
+		return err
+	}
+	objectStore.Store = store
 	c.MapObjectStore[nameHandle] = objectStore
+
 	return nil
 }
 
