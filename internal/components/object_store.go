@@ -21,6 +21,7 @@ func (c *ComponentNats) CreateObjectStore(config ConfigObjectStore) error {
 
 	// check if bucket exists
 	store, err := c.JsContext.ObjectStore(fullBucketName)
+
 	if err != nil || store == nil {
 		config.ObjectStoreConfig.Bucket = fullBucketName
 		store, err = c.JsContext.CreateObjectStore(config.ObjectStoreConfig)

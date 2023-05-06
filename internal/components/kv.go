@@ -6,7 +6,7 @@ import (
 	"go.uber.org/zap"
 )
 
-type ConfigKeyValueStore struct {
+type ConfigKVStore struct {
 	CommonResourceConfig
 	KVConfig *nats.KeyValueConfig
 }
@@ -16,7 +16,25 @@ type KVStoreNats struct {
 	Store nats.KeyValue
 }
 
-func (c *ComponentNats) CreateKVStore(config ConfigKeyValueStore) error {
+func (cfg ConfigKVStore) Validate() bool {
+	if cfg.KVConfig == nil {
+		zap.S().Errorf("kv config is nil")
+		return false
+	}
+
+	if cfg.KVConfig.Bucket == EmptyString {
+		zap.S().Errorf("kv config bucket is empty")
+		return false
+	}
+
+	return true
+}
+
+func (c *ComponentNats) CreateKVStore(config ConfigKVStore) error {
+	if !config.Validate() {
+		return fmt.Errorf("invalid kv store config")
+	}
+
 	nameHandle := config.KVConfig.Bucket
 	fullBucketName := GetFullBucketName(config)
 
@@ -48,7 +66,25 @@ func (c *ComponentNats) CreateKVStore(config ConfigKeyValueStore) error {
 	return nil
 }
 
-func GetFullBucketName(config ConfigKeyValueStore) string {
+func (c *ComponentNats) DeleteKVStore(nameHandle string) error {
+	// check if the store exists in nats component
+	if store, ok := c.MapKVStore[nameHandle]; ok {
+
+		// delete from nats
+		if err := c.JsContext.DeleteKeyValue(store.FullName()); err != nil {
+			return err
+		}
+
+		// delete from map
+		delete(c.MapKVStore, nameHandle)
+	} else {
+		return fmt.Errorf("kv store '%s' does not exist in nats component", nameHandle)
+	}
+
+	return nil
+}
+
+func GetFullBucketName(config ConfigKVStore) string {
 	prefix := GetResourcePrefix(config.Prefixes, config.Category, UnderScore)
-	return fmt.Sprintf("%s_%s", prefix, config.KVConfig.Bucket)
+	return fmt.Sprintf("%s%s", prefix, config.KVConfig.Bucket)
 }

@@ -6,7 +6,7 @@ import (
 )
 
 type CommonResourceConfig struct {
-	// Prefixes to be added to all stream, subjects, queues, etc
+	// Prefixes to be added to all stream, subjects, queues, etc (optional)
 	Prefixes []string
 	// Category is the category of the resource
 	Category ResourceCategory

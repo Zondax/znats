@@ -3,6 +3,7 @@ package nats
 import (
 	"fmt"
 	nats2 "github.com/nats-io/nats.go"
+	"gotest.tools/assert"
 	"os"
 	"testing"
 )
@@ -57,6 +58,11 @@ func TestCreateStream(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error while creating stream: %v", err)
 	}
+
+	// test full name is correct
+	fullStreamName := natsComponent.Streams[streamName].fullName
+	want := "data_TST_testnet_myteststream"
+	assert.Equal(t, fullStreamName, want)
 
 	// check if stream is stored in nats component
 	if _, ok := natsComponent.Streams[streamName]; !ok {

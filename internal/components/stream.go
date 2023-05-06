@@ -20,7 +20,25 @@ type ConfigStream struct {
 	NatsStreamConfig *nats.StreamConfig
 }
 
+func (cfg ConfigStream) Validate() bool {
+	if cfg.NatsStreamConfig == nil {
+		zap.S().Errorf("stream config is nil")
+		return false
+	}
+
+	if cfg.NatsStreamConfig.Name == EmptyString {
+		zap.S().Errorf("stream config name is empty")
+		return false
+	}
+
+	return true
+}
+
 func (c *ComponentNats) CreateStream(config ConfigStream) error {
+	if !config.Validate() {
+		return fmt.Errorf("invalid stream config")
+	}
+
 	// Append prefix to stream name and subjects
 	nameHandle := config.NatsStreamConfig.Name
 	config.NatsStreamConfig.Name = GetStreamFullName(config)
