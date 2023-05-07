@@ -34,7 +34,7 @@ func TestPingService(t *testing.T) {
 	assert.NilError(t, err)
 
 	res = natsComponent.Ping()
-	want.Streams = []string{streamName}
+	want.Streams = []string{"data_TST_testnet_myteststream"}
 	assert.DeepEqual(t, res, want)
 
 	// add an input topic and compare
@@ -45,13 +45,13 @@ func TestPingService(t *testing.T) {
 			Prefixes: prefixes,
 		},
 		Name:    inputTopicName,
-		Subject: "testsubject",
+		Subject: "testinputsubject",
 	})
 
 	natsComponent.AddInputTopic(inputTopic)
 
 	res = natsComponent.Ping()
-	want.InputTopics = []string{inputTopicName}
+	want.InputTopics = []string{"data.TST.testnet.testinputsubject"}
 	assert.DeepEqual(t, res, want)
 
 	// add an output topic and compare
@@ -62,12 +62,12 @@ func TestPingService(t *testing.T) {
 			Prefixes: prefixes,
 		},
 		Name:    outputTopicName,
-		Subject: "testsubject",
+		Subject: "testoutputsubject",
 	})
 
 	natsComponent.AddOutputTopic(outputTopic)
 
 	res = natsComponent.Ping()
-	want.OutputTopics = []string{outputTopicName}
+	want.OutputTopics = []string{"data.TST.testnet.testoutputsubject"}
 	assert.DeepEqual(t, res, want)
 }

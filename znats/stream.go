@@ -156,6 +156,14 @@ func (c *ComponentNats) DeleteStream(nameHandle string) error {
 	return nil
 }
 
+func (c *ComponentNats) GetStreamsFullNames() []string {
+	streams := make([]string, 0, len(c.Streams))
+	for _, stream := range c.Streams {
+		streams = append(streams, stream.FullName())
+	}
+	return streams
+}
+
 func GetStreamFullName(config ConfigStream) string {
 	prefix := GetResourcePrefix(config.Prefixes, config.Category, UnderScore)
 	return fmt.Sprintf("%s%s", prefix, config.NatsStreamConfig.Name)

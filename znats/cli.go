@@ -38,13 +38,17 @@ func (c *ComponentNats) GetReqReplyFullName(global bool, reqReplyName string) st
 	}
 }
 
+func (c *ComponentNats) GetCliCmdFullNames() []string {
+	res := make([]string, 0)
+	for cmd := range c.natCLI {
+		res = append(res, cmd)
+	}
+	return res
+}
+
 func (c *ComponentNats) ReplyListAvailableCliCmd(req *nats.Msg) {
 	res := make(map[string][]string)
-	l := make([]string, 0)
-	for cmd := range c.natCLI {
-		l = append(l, cmd)
-	}
-	res[c.Config.ServiceName] = l
+	res[c.Config.ServiceName] = c.GetCliCmdFullNames()
 	resJson, _ := json.Marshal(res)
 	_ = req.Respond(resJson)
 }

@@ -81,6 +81,14 @@ func (c *ComponentNats) GetInputTopic(name string) (error, *Topic) {
 	}
 }
 
+func (c *ComponentNats) GetInputTopicsFullNames() []string {
+	topics := make([]string, 0, len(c.InputTopics))
+	for _, topic := range c.InputTopics {
+		topics = append(topics, topic.FullRoute())
+	}
+	return topics
+}
+
 func (c *ComponentNats) GetOutputTopic(name string) (error, *Topic) {
 	if topic, ok := c.OutputTopics[name]; ok {
 		return nil, topic
@@ -89,6 +97,14 @@ func (c *ComponentNats) GetOutputTopic(name string) (error, *Topic) {
 		zap.S().Errorf(err.Error())
 		return err, nil
 	}
+}
+
+func (c *ComponentNats) GetOutputTopicsFullNames() []string {
+	topics := make([]string, 0, len(c.OutputTopics))
+	for _, topic := range c.OutputTopics {
+		topics = append(topics, topic.FullRoute())
+	}
+	return topics
 }
 
 // build builds the full route for the topic.

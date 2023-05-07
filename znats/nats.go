@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/nats-io/nats.go"
 	"go.uber.org/zap"
-	"reflect"
 	"strings"
 )
 
@@ -94,10 +93,10 @@ func (c *ComponentNats) replyPing(msg *nats.Msg) {
 func (c *ComponentNats) Ping() PingResponse {
 	return PingResponse{
 		Name:         c.Config.ServiceName,
-		InputTopics:  getMapKeys(c.InputTopics),
-		OutputTopics: getMapKeys(c.OutputTopics),
-		CliCommands:  getMapKeys(c.natCLI),
-		Streams:      getMapKeys(c.Streams),
+		InputTopics:  c.GetInputTopicsFullNames(),
+		OutputTopics: c.GetOutputTopicsFullNames(),
+		CliCommands:  c.GetCliCmdFullNames(),
+		Streams:      c.GetStreamsFullNames(),
 	}
 }
 
@@ -113,20 +112,4 @@ func GetResourcePrefix(prefixes []string, category ResourceCategory, separator s
 		prefix,
 		separator,
 	)
-}
-
-func getMapKeys(m interface{}) []string {
-	v := reflect.ValueOf(m)
-	if v.Kind() != reflect.Map {
-		return nil
-	}
-
-	keys := v.MapKeys()
-	// convert keys to string slice
-	strKeys := make([]string, len(keys))
-	for i := range keys {
-		strKeys[i] = keys[i].String()
-	}
-
-	return strKeys
 }
