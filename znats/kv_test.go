@@ -1,4 +1,4 @@
-package nats
+package znats
 
 import (
 	"github.com/nats-io/nats.go"

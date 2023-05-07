@@ -9,7 +9,7 @@ CMDS=$(shell find cmd -type d)
 default: build
 
 build:
-	@go build ./internal/...
+	@go build ./znats/...
 
 mod-tidy:
 	@go mod tidy

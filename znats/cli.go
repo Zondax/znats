@@ -1,4 +1,4 @@
-package nats
+package znats
 
 import (
 	"encoding/json"
