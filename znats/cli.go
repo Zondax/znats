@@ -32,9 +32,9 @@ func (c *ComponentNats) AddNatCliCmd(natcli map[string]ReqReplyCB) {
 func (c *ComponentNats) GetReqReplyFullName(global bool, reqReplyName string) string {
 	prefix := GetResourcePrefix(c.Config.ResourcePrefixes, NoCategory, Dash)
 	if !global {
-		return fmt.Sprintf("%s-%s-%s", prefix, c.Config.ServiceName, reqReplyName)
+		return fmt.Sprintf("%s%s-%s", prefix, c.Config.ServiceName, reqReplyName)
 	} else {
-		return fmt.Sprintf("%s-%s", prefix, reqReplyName)
+		return fmt.Sprintf("%s%s", prefix, reqReplyName)
 	}
 }
 

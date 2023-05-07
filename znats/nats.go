@@ -77,24 +77,28 @@ func newJetStreamServer(server string, credential Credential) (error, nats.JetSt
 
 func (c *ComponentNats) addDefaultCliFunctions() {
 	c.AddNatCliCmd(map[string]ReqReplyCB{
-		"ping": {
-			Callback: c.ping,
+		"Ping": {
+			Callback: c.replyPing,
 			Global:   true,
 		},
 	})
 }
 
-func (c *ComponentNats) ping(msg *nats.Msg) {
-	zap.S().Infof("Received ping request")
-	var response PingResponse
-	response.Name = c.Config.ServiceName
-	response.InputTopics = getMapKeys(c.InputTopics)
-	response.OutputTopics = getMapKeys(c.OutputTopics)
-	response.CliCommands = getMapKeys(c.natCLI)
-	response.Streams = getMapKeys(c.Streams)
-
-	res, _ := json.Marshal(response)
+func (c *ComponentNats) replyPing(msg *nats.Msg) {
+	zap.S().Infof("Received Ping request")
+	pingData := c.Ping()
+	res, _ := json.Marshal(pingData)
 	_ = msg.Respond(res)
+}
+
+func (c *ComponentNats) Ping() PingResponse {
+	return PingResponse{
+		Name:         c.Config.ServiceName,
+		InputTopics:  getMapKeys(c.InputTopics),
+		OutputTopics: getMapKeys(c.OutputTopics),
+		CliCommands:  getMapKeys(c.natCLI),
+		Streams:      getMapKeys(c.Streams),
+	}
 }
 
 func GetResourcePrefix(prefixes []string, category ResourceCategory, separator string) string {
