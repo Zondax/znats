@@ -66,6 +66,7 @@ func (c *ComponentNats) CreateStream(config ConfigStream) error {
 
 	// Check if stream already exists
 	if exists := c.StreamExists(config.NatsStreamConfig.Name); !exists {
+		// stream does not exist, create it
 		streamInfo, err := c.JsContext.AddStream(config.NatsStreamConfig)
 		if err != nil {
 			zap.S().Errorf("could not create stream '%s': %s", config.NatsStreamConfig.Name, err.Error())
@@ -82,6 +83,23 @@ func (c *ComponentNats) CreateStream(config ConfigStream) error {
 			Info: streamInfo,
 		}
 		zap.S().Infof("created stream '%s' with subjects %v", config.NatsStreamConfig.Name, config.NatsStreamConfig.Subjects)
+	} else {
+		// stream exists, add it to the streams map
+		streamInfo, err := c.JsContext.StreamInfo(config.NatsStreamConfig.Name)
+		if err != nil {
+			zap.S().Errorf("could not get stream info for '%s': %s", config.NatsStreamConfig.Name, err.Error())
+			return err
+		}
+
+		c.Streams[nameHandle] = StreamNats{
+			CommonResourceProperties: CommonResourceProperties{
+				NameHandle: nameHandle,
+				Category:   config.Category,
+				fullName:   config.NatsStreamConfig.Name,
+			},
+			Info: streamInfo,
+		}
+		zap.S().Infof("added already existing stream '%s'", config.NatsStreamConfig.Name)
 	}
 
 	return nil
