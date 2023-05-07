@@ -39,14 +39,8 @@ lint:
 	golangci-lint --version
 	golangci-lint run
 
-earthly:
-	earthly +all
-
-docker-bash:
-	docker run --platform linux/amd64 -it zondax/${APP_NAME}:latest /bin/sh
-
-docker-run:
-	docker run --platform linux/amd64 -it zondax/${APP_NAME}:latest
+test:
+	go test ./znats/...
 
 ########################################
 
