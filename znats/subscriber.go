@@ -12,7 +12,14 @@ type SubscriberNats struct {
 	Subscription *nats.Subscription
 }
 
-func (c *ComponentNats) AddQueuedSubscriber(topic *Topic, cb nats.MsgHandler, opts ...nats.SubOpt) (error, SubscriberNats) {
+func (c *ComponentNats) AddQueuedSubscriber(topicName string, cb nats.MsgHandler, opts ...nats.SubOpt) (error, SubscriberNats) {
+	// Get input topic
+	err, topic := c.GetInputTopic(topicName)
+	if err != nil {
+		zap.S().Errorf("failed to get input topic: %s", topicName)
+		return err, SubscriberNats{}
+	}
+
 	queue := GetSubscriberQueueName(topic)
 	consumer := GetSubscriberConsumerName(topic)
 	topicFullName := topic.FullRoute()
@@ -28,7 +35,14 @@ func (c *ComponentNats) AddQueuedSubscriber(topic *Topic, cb nats.MsgHandler, op
 	}
 }
 
-func (c *ComponentNats) AddQueuedPullSubscriber(topic *Topic, cb nats.MsgHandler, pullTime time.Duration, opts ...nats.SubOpt) (error, SubscriberNats) {
+func (c *ComponentNats) AddQueuedPullSubscriber(topicName string, cb nats.MsgHandler, pullTime time.Duration, opts ...nats.SubOpt) (error, SubscriberNats) {
+	// Get input topic
+	err, topic := c.GetInputTopic(topicName)
+	if err != nil {
+		zap.S().Errorf("failed to get input topic: %s", topicName)
+		return err, SubscriberNats{}
+	}
+
 	queue := GetSubscriberQueueName(topic)
 	consumer := GetSubscriberConsumerName(topic)
 	topicFullName := topic.FullRoute()
@@ -69,7 +83,14 @@ func (c *ComponentNats) AddQueuedPullSubscriber(topic *Topic, cb nats.MsgHandler
 	}
 }
 
-func (c *ComponentNats) AddSubscriber(topic Topic, cb func(*nats.Msg), opts ...nats.SubOpt) (error, *nats.Subscription) {
+func (c *ComponentNats) AddSubscriber(topicName string, cb func(*nats.Msg), opts ...nats.SubOpt) (error, SubscriberNats) {
+	// Get input topic
+	err, topic := c.GetInputTopic(topicName)
+	if err != nil {
+		zap.S().Errorf("failed to get input topic: %s", topicName)
+		return err, SubscriberNats{}
+	}
+
 	topicFullName := topic.FullRoute()
 	zap.S().Infof("Creating subscriber: \n Topic: %s \n",
 		topicFullName)
@@ -78,7 +99,10 @@ func (c *ComponentNats) AddSubscriber(topic Topic, cb func(*nats.Msg), opts ...n
 		cb(msg)
 	}, opts...)
 
-	return err, subscription
+	return err, SubscriberNats{
+		Topic:        topic,
+		Subscription: subscription,
+	}
 }
 
 func GetSubscriberConsumerName(topic *Topic) string {

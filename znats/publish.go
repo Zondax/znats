@@ -5,7 +5,14 @@ import (
 	"go.uber.org/zap"
 )
 
-func (c *ComponentNats) PublishAsync(topic *Topic, msg []byte, opts ...nats.PubOpt) (error, nats.PubAckFuture) {
+func (c *ComponentNats) PublishAsync(topicName string, msg []byte, opts ...nats.PubOpt) (error, nats.PubAckFuture) {
+	// Get output topic
+	err, topic := c.GetOutputTopic(topicName)
+	if err != nil {
+		zap.S().Errorf("failed to get output topic: %s", topicName)
+		return err, nil
+	}
+
 	ackFuture, err := c.JsContext.PublishAsync(topic.FullRoute(), msg, opts...)
 	if err != nil {
 		zap.S().Errorf("error on PublishAsync for topic '%s': %s", topic.FullRoute(), err.Error())
@@ -14,7 +21,14 @@ func (c *ComponentNats) PublishAsync(topic *Topic, msg []byte, opts ...nats.PubO
 	return nil, ackFuture
 }
 
-func (c *ComponentNats) Publish(topic *Topic, msg []byte, opts ...nats.PubOpt) (error, *nats.PubAck) {
+func (c *ComponentNats) Publish(topicName string, msg []byte, opts ...nats.PubOpt) (error, *nats.PubAck) {
+	// Get output topic
+	err, topic := c.GetOutputTopic(topicName)
+	if err != nil {
+		zap.S().Errorf("failed to get output topic: %s", topicName)
+		return err, nil
+	}
+
 	pub, err := c.JsContext.Publish(topic.FullRoute(), msg, opts...)
 	if err != nil {
 		zap.S().Errorf("error on Publish for topic '%s': %s", topic.FullRoute(), err.Error())

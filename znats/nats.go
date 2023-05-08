@@ -76,8 +76,12 @@ func newJetStreamServer(server string, credential Credential) (error, nats.JetSt
 
 func (c *ComponentNats) addDefaultCliFunctions() {
 	c.AddNatCliCmd(map[string]ReqReplyCB{
-		"Ping": {
+		"ping": {
 			Callback: c.replyPing,
+			Global:   true,
+		},
+		"list-commands": {
+			Callback: c.replyListAvailableCliCmd,
 			Global:   true,
 		},
 	})

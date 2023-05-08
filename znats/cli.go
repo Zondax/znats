@@ -46,7 +46,7 @@ func (c *ComponentNats) GetCliCmdFullNames() []string {
 	return res
 }
 
-func (c *ComponentNats) ReplyListAvailableCliCmd(req *nats.Msg) {
+func (c *ComponentNats) replyListAvailableCliCmd(req *nats.Msg) {
 	res := make(map[string][]string)
 	res[c.Config.ServiceName] = c.GetCliCmdFullNames()
 	resJson, _ := json.Marshal(res)
