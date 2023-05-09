@@ -15,7 +15,6 @@ jobs:
         ports:
           - "4222:4222"
           - "5530:5530"
-        options: -js -m 5530
     steps:
       - name: Checkout
         uses: actions/checkout@v3
