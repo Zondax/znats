@@ -20,8 +20,8 @@ func (c *ComponentNats) AddQueuedSubscriber(topicName string, cb nats.MsgHandler
 		return err, SubscriberNats{}
 	}
 
-	queue := GetSubscriberQueueName(topic)
-	consumer := GetSubscriberConsumerName(topic)
+	queue := getSubscriberQueueName(topic)
+	consumer := getSubscriberConsumerName(topic)
 	topicFullName := topic.FullRoute()
 
 	zap.S().Infof("Creating queued subscriber: \n Topic: %s \n Queue: %s \n Consumer: %s",
@@ -43,8 +43,8 @@ func (c *ComponentNats) AddQueuedPullSubscriber(topicName string, cb nats.MsgHan
 		return err, SubscriberNats{}
 	}
 
-	queue := GetSubscriberQueueName(topic)
-	consumer := GetSubscriberConsumerName(topic)
+	queue := getSubscriberQueueName(topic)
+	consumer := getSubscriberConsumerName(topic)
 	topicFullName := topic.FullRoute()
 
 	zap.S().Infof("Creating queued pull subscriber: \n Topic: %s \n Queue: %s \n Consumer: %s",
@@ -105,10 +105,10 @@ func (c *ComponentNats) AddSubscriber(topicName string, cb func(*nats.Msg), opts
 	}
 }
 
-func GetSubscriberConsumerName(topic *Topic) string {
+func getSubscriberConsumerName(topic *Topic) string {
 	return strings.ReplaceAll(topic.FullRoute(), Dot, UnderScore)
 }
 
-func GetSubscriberQueueName(topic *Topic) string {
+func getSubscriberQueueName(topic *Topic) string {
 	return strings.ReplaceAll(topic.FullRoute(), Dot, UnderScore)
 }
