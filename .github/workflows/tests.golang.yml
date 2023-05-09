@@ -7,7 +7,7 @@ on:
     branches: [ main, master, dev ]
 
 jobs:
-  nats-server:
+  unit-tests:
     runs-on: ubuntu-latest
     services:
       nats:
@@ -16,8 +16,6 @@ jobs:
           - "4222:4222"
           - "5530:5530"
         command: "-js -m 5530"
-  unit-tests:
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
