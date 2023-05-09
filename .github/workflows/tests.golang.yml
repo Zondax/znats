@@ -16,7 +16,7 @@ jobs:
           - "4222:4222"
           - "5530:5530"
         volumes:
-            - ./nats.conf:/nats-server/nats.conf
+            - nats.conf:/nats-server/nats.conf
     steps:
       - name: Checkout
         uses: actions/checkout@v3
