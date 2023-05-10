@@ -1,6 +1,5 @@
 projectName: znats
 
 templates:
-  - template: templates/golem
-    values:
-      projectDescription: "Nats wrapper for Golem"
+  - template: templates/publish-earthly
+  - template: templates/basic-golang
