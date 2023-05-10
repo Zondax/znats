@@ -27,7 +27,9 @@ jobs:
         run: |
           make build
       - name: Nats server
-        run: docker-compose up -d
+        run: |
+          docker-compose up -d
+          sleep 5
       - name: Unit tests
         run: |
           make test
