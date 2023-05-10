@@ -9,7 +9,3 @@ services:
     command: "-js -m 5530 -c /root/config.yaml "
     volumes:
       - ./nats_config.yaml:/root/config.yaml
-    networks:
-      - mynetwork
-networks:
-  mynetwork:
