@@ -13,7 +13,7 @@ func TestPingService(t *testing.T) {
 		Name:         "test",
 		InputTopics:  []string{},
 		OutputTopics: []string{},
-		CliCommands:  []string{"TST-testnet-ping", "TST-testnet-list-commands"},
+		CliCommands:  []string{"TST-testnet-list-commands", "TST-testnet-ping"},
 		Streams:      []string{},
 	}
 

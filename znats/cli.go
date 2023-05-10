@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/nats-io/nats.go"
 	"go.uber.org/zap"
+	"sort"
 )
 
 type ReqReplyCB struct {
@@ -43,6 +44,8 @@ func (c *ComponentNats) GetCliCmdFullNames() []string {
 	for cmd := range c.natCLI {
 		res = append(res, cmd)
 	}
+
+	sort.Strings(res)
 	return res
 }
 

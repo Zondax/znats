@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/nats-io/nats.go"
 	"go.uber.org/zap"
+	"sort"
 )
 
 const (
@@ -161,6 +162,8 @@ func (c *ComponentNats) GetStreamsFullNames() []string {
 	for _, stream := range c.Streams {
 		streams = append(streams, stream.FullName())
 	}
+
+	sort.Strings(streams)
 	return streams
 }
 

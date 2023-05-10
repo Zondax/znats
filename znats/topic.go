@@ -3,6 +3,7 @@ package znats
 import (
 	"fmt"
 	"go.uber.org/zap"
+	"sort"
 	"time"
 )
 
@@ -86,6 +87,8 @@ func (c *ComponentNats) GetInputTopicsFullNames() []string {
 	for _, topic := range c.InputTopics {
 		topics = append(topics, topic.FullRoute())
 	}
+
+	sort.Strings(topics)
 	return topics
 }
 
@@ -104,6 +107,8 @@ func (c *ComponentNats) GetOutputTopicsFullNames() []string {
 	for _, topic := range c.OutputTopics {
 		topics = append(topics, topic.FullRoute())
 	}
+
+	sort.Strings(topics)
 	return topics
 }
 
