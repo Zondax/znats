@@ -5,7 +5,7 @@ services:
     image: nats:latest
     command: "-js -m 5530"
     ports:
-      - 4222:4222
-      - 5530:5530
+      - "4222:4222"
+      - "5530:5530"
     volumes:
       - ./nats_config.yaml:/root/config.yaml
