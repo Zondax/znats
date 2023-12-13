@@ -5,12 +5,11 @@ go 1.20
 require (
 	github.com/nats-io/nats.go v1.31.0
 	github.com/spf13/viper v1.18.1
-	go.uber.org/zap v1.24.0
+	go.uber.org/zap v1.26.0
 	gotest.tools v2.2.0+incompatible
 )
 
 require (
-	github.com/benbjohnson/clock v1.3.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
@@ -28,7 +27,6 @@ require (
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.16.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
