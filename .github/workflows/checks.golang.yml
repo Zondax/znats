@@ -11,9 +11,6 @@ on:
 
 jobs:
   checks:
-<<<<<<< HEAD
-    runs-on: [self-hosted, linux, x64]
-=======
     runs-on: zondax-runners
     container:
       image: golang:1.20
@@ -24,7 +21,6 @@ jobs:
         ports:
           - "4222:4222"
           - "5530:5530"
->>>>>>> 969cd72 (move to new runners)
     steps:
       - name: Checkout
         uses: actions/checkout@v3
