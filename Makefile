@@ -28,10 +28,10 @@ gitclean:
 	git clean -xfd
 	git submodule foreach --recursive git clean -xfd
 
-install_lint:
+install-lint:
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell go env GOPATH)/bin latest
 
-check-modtidy:
+mod-tidy-check:
 	go mod tidy
 	git diff --exit-code -- go.mod go.sum
 

@@ -3,6 +3,9 @@ version: '3.0'
 services:
   nats:
     image: nats:latest
+    ports:
+      - "4222:4222"
+      - "5530:5530"
     command: "-js -m 5530"
     volumes:
       - ./nats_config.yaml:/root/config.yaml
