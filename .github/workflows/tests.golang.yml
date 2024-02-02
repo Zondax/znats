@@ -40,10 +40,10 @@ jobs:
         run: |
           make build
 
-      - name: Nats server
-        run: |
-          docker-compose run -T nats -js -m 5530 -c /root/config.yaml &
-          sleep 10
+#      - name: Nats server
+#        run: |
+#          docker-compose run -T nats -js -m 5530 -c /root/config.yaml &
+#          sleep 10
 
       - name: List Docker containers
         run: docker ps
