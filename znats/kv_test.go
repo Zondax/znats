@@ -1,6 +1,7 @@
 package znats
 
 import (
+	"fmt"
 	"github.com/nats-io/nats.go"
 	"gotest.tools/assert"
 	"testing"
@@ -8,16 +9,21 @@ import (
 )
 
 func TestNatsPing(t *testing.T) {
+	fmt.Println("Executing test nats ping")
 	nc, err := nats.Connect("nats://localhost:4222")
+	fmt.Println("Connection successful")
 	if err != nil {
+		fmt.Println("Connection unsuccessful")
 		t.Fatalf("Error connecting to nats: %v", err)
 	}
 	defer nc.Close()
 
+	fmt.Println("Sending request")
 	response, err := nc.Request("ping", []byte("ping"), 1000*time.Millisecond)
 	if err != nil {
 		t.Fatalf("error sending ping: %v", err)
 	}
+	fmt.Println("Sending request ok")
 
 	if string(response.Data) != "pong" {
 		t.Fatalf("wrong answer: %s", response.Data)
