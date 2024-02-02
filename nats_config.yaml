@@ -1,7 +1,0 @@
-max_payload: 8MB
-
-websocket
-{
-  port: 9111
-  no_tls: true
-}
