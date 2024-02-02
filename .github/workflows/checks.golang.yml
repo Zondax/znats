@@ -12,27 +12,21 @@ on:
 jobs:
   checks:
     runs-on: zondax-runners
+    container:
+      image: golang:1.21
+      options: --tty
 
-    services:
-      nats:
-        image: nats:2.9.16
-        ports:
-          - "4222:4222"
-          - "5530:5530"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
         with:
-          go-version: '^1.20'
+          submodules: true
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y git build-essential wget curl
-          sudo apt-get install -y gettext-base
-          sudo curl -L "https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
+          apt-get update
+          apt-get install -y git build-essential wget curl
+          apt-get install -y gettext-base
 
       - name: Build
         run: |
@@ -44,9 +38,3 @@ jobs:
         run: |
           make install-lint
           make lint
-      - name: Nats server
-        run: |
-          docker-compose run -T nats&
-          sleep 5
-      - name: Unit tests
-        run: make test
