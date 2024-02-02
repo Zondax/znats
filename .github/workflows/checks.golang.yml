@@ -22,9 +22,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - uses: actions/setup-go@v3
         with:
-          go-version: "1.21"
+          go-version: "1.20"
 
       - name: Install dependencies
         run: |
@@ -38,15 +39,19 @@ jobs:
         run: |
           git config --global --add safe.directory "*"
           make build
+
       - name: ModTidy check
         run: make mod-tidy-check
+
       - name: Lint check
         run: |
           make install-lint
           make lint
+
       - name: Nats server
         run: |
           docker-compose run -T nats&
           sleep 5
+
       - name: Unit tests
         run: make test
