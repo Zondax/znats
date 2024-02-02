@@ -47,4 +47,4 @@ jobs:
         run: docker ps
 
       - name: Unit tests
-        run: make test || true
+        run: make test
