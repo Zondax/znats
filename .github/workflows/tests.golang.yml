@@ -10,7 +10,7 @@ on:
     branches: [main, master, dev]
 
 jobs:
-  checks:
+  tests:
     runs-on: zondax-runners
 
     services:
