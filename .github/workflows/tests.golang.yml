@@ -38,5 +38,8 @@ jobs:
           docker-compose run -T nats&
           sleep 10
 
+      - name: List Docker containers
+        run: docker ps
+
       - name: Unit tests
         run: make test || true
