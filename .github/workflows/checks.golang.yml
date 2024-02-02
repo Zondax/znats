@@ -28,11 +28,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt-get update
-          apt-get install -y git build-essential wget curl
-          apt-get install -y gettext-base
-          curl -L "https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          chmod +x /usr/local/bin/docker-compose
+          sudo apt-get update
+          sudo apt-get install -y git build-essential wget curl
+          sudo apt-get install -y gettext-base
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
 
       - name: Build
         run: |
