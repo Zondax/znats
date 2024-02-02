@@ -4,7 +4,25 @@ import (
 	"github.com/nats-io/nats.go"
 	"gotest.tools/assert"
 	"testing"
+	"time"
 )
+
+func TestNatsPing(t *testing.T) {
+	nc, err := nats.Connect("nats://localhost:4222")
+	if err != nil {
+		t.Fatalf("Error connecting to nats: %v", err)
+	}
+	defer nc.Close()
+
+	response, err := nc.Request("ping", []byte("ping"), 1000*time.Millisecond)
+	if err != nil {
+		t.Fatalf("error sending ping: %v", err)
+	}
+
+	if string(response.Data) != "pong" {
+		t.Fatalf("wrong answer: %s", response.Data)
+	}
+}
 
 func TestCreateKVStore(t *testing.T) {
 	bucketNameHandle := "testKVStore"
