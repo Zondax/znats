@@ -44,6 +44,14 @@ jobs:
           docker-compose run -T nats&
           sleep 10
 
+      - name: Install NATS client using Go
+        run: go install github.com/nats-io/natscli/nats@latest
+
+      - name: NATS Request Test
+        run: |
+          output=$(nats request -s nats://localhost:4222 test "Hello" 2>&1)
+          echo "$output"
+
       - name: List Docker containers
         run: docker ps
 
