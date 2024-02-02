@@ -25,7 +25,6 @@ func TestCreateKVStore(t *testing.T) {
 	fullBucketName := natsComponent.MapKVStore[bucketNameHandle].fullName
 	want := "data_TST_testnet_testKVStore"
 	assert.Equal(t, fullBucketName, want)
-
 	// check if the store exists in nats component
 	if _, ok := natsComponent.MapKVStore[bucketNameHandle]; !ok {
 		t.Fatalf("kv store '%s' no added in natscomponent", bucketNameHandle)
