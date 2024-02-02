@@ -12,9 +12,6 @@ on:
 jobs:
   checks:
     runs-on: zondax-runners
-    container:
-      image: golang:1.21
-      options: --tty
 
     services:
       nats:
@@ -25,13 +22,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
         with:
-          submodules: true
+          go-version: "1.21"
 
       - name: Install dependencies
         run: |
           apt-get update
-          apt-get install -y build-essential wget curl
+          apt-get install -y git build-essential wget curl
           apt-get install -y gettext-base
           curl -L "https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           chmod +x /usr/local/bin/docker-compose
