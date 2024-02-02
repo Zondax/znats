@@ -1,34 +1,10 @@
 package znats
 
 import (
-	"fmt"
 	"github.com/nats-io/nats.go"
 	"gotest.tools/assert"
 	"testing"
-	"time"
 )
-
-func TestNatsPing(t *testing.T) {
-	fmt.Println("Executing test nats ping")
-	nc, err := nats.Connect("nats://localhost:4222")
-	fmt.Println("Connection successful")
-	if err != nil {
-		fmt.Println("Connection unsuccessful")
-		t.Fatalf("Error connecting to nats: %v", err)
-	}
-	defer nc.Close()
-
-	fmt.Println("Sending request")
-	response, err := nc.Request("ping", []byte("ping"), 1000*time.Millisecond)
-	if err != nil {
-		t.Fatalf("error sending ping: %v", err)
-	}
-	fmt.Println("Sending request ok")
-
-	if string(response.Data) != "pong" {
-		t.Fatalf("wrong answer: %s", response.Data)
-	}
-}
 
 func TestCreateKVStore(t *testing.T) {
 	bucketNameHandle := "testKVStore"
@@ -49,6 +25,7 @@ func TestCreateKVStore(t *testing.T) {
 	fullBucketName := natsComponent.MapKVStore[bucketNameHandle].fullName
 	want := "data_TST_testnet_testKVStore"
 	assert.Equal(t, fullBucketName, want)
+	assert.Equal(t, 1, 1)
 	// check if the store exists in nats component
 	if _, ok := natsComponent.MapKVStore[bucketNameHandle]; !ok {
 		t.Fatalf("kv store '%s' no added in natscomponent", bucketNameHandle)

@@ -13,13 +13,6 @@ jobs:
   tests:
     runs-on: zondax-runners
 
-    services:
-      nats:
-        image: nats:latest
-        ports:
-          - "4222:4222"
-          - "5530:5530"
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -40,15 +33,10 @@ jobs:
         run: |
           make build
 
-      - name: Start NATS Container
+      - name: Nats server
         run: |
-          docker run -d -p 4222:4222 -p 5530:5530 -v $(pwd)/nats_config.yaml:/root/config.yaml nats:latest -js -m 5530 -c /root/config.yaml
+          docker-compose run -T nats -js -m 5530 -c /root/config.yaml &
           sleep 10
-
-#      - name: Nats server
-#        run: |
-#          docker-compose run -T nats -js -m 5530 -c /root/config.yaml &
-#          sleep 10
 
       - name: List Docker containers
         run: docker ps
