@@ -42,7 +42,7 @@ jobs:
       - name: Nats server
         run: |
           docker-compose run -T nats&
-          sleep 5
+          sleep 10
 
       - name: Unit tests
         run: make test
