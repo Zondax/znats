@@ -15,7 +15,7 @@ func setup() {
 	fmt.Println("Setting up nats component ...")
 	var err error
 	natsComponent, err = NewNatsComponent(ConfigNats{
-		ServerUrl:        "http://0.0.0.0:4222",
+		ServerUrl:        "nats://localhost:4222",
 		CredentialJWT:    "",
 		CredentialSeed:   "",
 		ResourcePrefixes: prefixes,
