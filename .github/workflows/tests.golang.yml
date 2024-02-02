@@ -35,7 +35,7 @@ jobs:
 
       - name: Nats server
         run: |
-          docker-compose run -T nats -js -m 5530 -c /root/config.yaml &
+          docker-compose up -d nats
           sleep 10
 
       - name: Check nats ports
