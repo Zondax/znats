@@ -59,9 +59,9 @@ func newJetStreamServer(server string, credential Credential) (error, nats.JetSt
 		// Connect to NATS
 		zap.S().Infof("Attempting to connect to nats server in %s ...", server)
 		nc, err = nats.Connect(server)
-		fmt.Println(fmt.Sprintf("Attempting to connect to nats server in %s ...", server))
+		fmt.Printf("Attempting to connect to nats server in %s ...", server)
 		if err != nil {
-			fmt.Println(fmt.Sprintf("Error %v", err.Error()))
+			fmt.Printf("Error %v", err.Error())
 			return err, nil, nil
 		}
 	}
