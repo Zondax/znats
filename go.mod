@@ -3,9 +3,9 @@ module github.com/zondax/znats
 go 1.20
 
 require (
-	github.com/nats-io/nats.go v1.33.0
+	github.com/nats-io/nats.go v1.34.1
 	github.com/spf13/viper v1.18.2
-	go.uber.org/zap v1.26.0
+	go.uber.org/zap v1.27.0
 	gotest.tools v2.2.0+incompatible
 )
 
