@@ -18,8 +18,8 @@ linters:
     - unparam
     - unused
     - durationcheck
-    - exportloopref
     - makezero
     - nilerr
     - reassign
-  
+  disable:
+    - exportloopref
