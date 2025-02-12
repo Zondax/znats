@@ -1,9 +1,10 @@
 package znats
 
 import (
+	"testing"
+
 	"github.com/nats-io/nats.go"
 	"gotest.tools/assert"
-	"testing"
 )
 
 func TestCreateKVStore(t *testing.T) {
@@ -18,7 +19,7 @@ func TestCreateKVStore(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err)
 	}
 
 	// test full name is correct
@@ -37,6 +38,6 @@ func TestCreateKVStore(t *testing.T) {
 
 	// delete the store
 	if err := natsComponent.DeleteKVStore(bucketNameHandle); err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err)
 	}
 }
