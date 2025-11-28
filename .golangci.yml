@@ -11,8 +11,6 @@ linters:
     - goconst
     - gocritic
     - staticcheck
-    - gosimple
-    - goconst
     - bodyclose
     - unconvert
     - unparam
