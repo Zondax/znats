@@ -2,9 +2,10 @@ package znats
 
 import (
 	"fmt"
-	"go.uber.org/zap"
 	"sort"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 type TopicConfig struct {
@@ -34,11 +35,11 @@ func NewTopic(config *TopicConfig) *Topic {
 }
 
 func (t *Topic) FullRoute() string {
-	return t.CommonResourceProperties.FullName()
+	return t.FullName()
 }
 
 func (t *Topic) Name() string {
-	return t.CommonResourceProperties.NameHandle
+	return t.NameHandle
 }
 
 func (c *ComponentNats) WaitForTopicToExist(topic *Topic) {
@@ -60,7 +61,7 @@ func (c *ComponentNats) AddInputTopic(topic *Topic) {
 		return
 	}
 
-	c.InputTopics[topic.CommonResourceProperties.NameHandle] = topic
+	c.InputTopics[topic.NameHandle] = topic
 }
 
 func (c *ComponentNats) AddOutputTopic(topic *Topic) {
@@ -72,13 +73,13 @@ func (c *ComponentNats) AddOutputTopic(topic *Topic) {
 	c.OutputTopics[topic.CommonResourceProperties.NameHandle] = topic
 }
 
-func (c *ComponentNats) GetInputTopic(name string) (error, *Topic) {
+func (c *ComponentNats) GetInputTopic(name string) (*Topic, error) {
 	if topic, ok := c.InputTopics[name]; ok {
-		return nil, topic
+		return topic, nil
 	} else {
 		err := fmt.Errorf("topic '%s' not found", name)
 		zap.S().Errorf(err.Error())
-		return err, nil
+		return nil, err
 	}
 }
 
@@ -92,13 +93,13 @@ func (c *ComponentNats) GetInputTopicsFullNames() []string {
 	return topics
 }
 
-func (c *ComponentNats) GetOutputTopic(name string) (error, *Topic) {
+func (c *ComponentNats) GetOutputTopic(name string) (*Topic, error) {
 	if topic, ok := c.OutputTopics[name]; ok {
-		return nil, topic
+		return topic, nil
 	} else {
 		err := fmt.Errorf("topic '%s' not found", name)
 		zap.S().Errorf(err.Error())
-		return err, nil
+		return nil, err
 	}
 }
 

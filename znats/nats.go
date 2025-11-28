@@ -3,13 +3,14 @@ package znats
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
+
 	"github.com/nats-io/nats.go"
 	"go.uber.org/zap"
-	"strings"
 )
 
 func NewNatsComponent(config ConfigNats) (*ComponentNats, error) {
-	err, jsContext, natsConn := newJetStreamServer(config.ServerUrl, Credential{
+	jsContext, natsConn, err := newJetStreamServer(config.ServerUrl, Credential{
 		JWT:  config.CredentialJWT,
 		Seed: config.CredentialSeed,
 	})
@@ -44,7 +45,7 @@ func (c *ComponentNats) Shutdown() error {
 	return nil
 }
 
-func newJetStreamServer(server string, credential Credential) (error, nats.JetStreamContext, *nats.Conn) {
+func newJetStreamServer(server string, credential Credential) (nats.JetStreamContext, *nats.Conn, error) {
 	var nc *nats.Conn
 	var err error
 
@@ -53,25 +54,25 @@ func newJetStreamServer(server string, credential Credential) (error, nats.JetSt
 		zap.S().Infof("Attempting to connect to nats server in %s using JWT and seed...", server)
 		nc, err = nats.Connect(server, nats.UserJWTAndSeed(credential.JWT, credential.Seed))
 		if err != nil {
-			return err, nil, nil
+			return nil, nil, err
 		}
 	} else {
 		// Connect to NATS
 		zap.S().Infof("Attempting to connect to nats server in %s ...", server)
 		nc, err = nats.Connect(server)
 		if err != nil {
-			return err, nil, nil
+			return nil, nil, err
 		}
 	}
 
 	// Create JetStream Context
 	js, err := nc.JetStream()
 	if err != nil {
-		return err, nil, nil
+		return nil, nil, err
 	}
 
 	zap.S().Infof("Successfully connected to nats server")
-	return nil, js, nc
+	return js, nc, nil
 }
 
 func (c *ComponentNats) addDefaultCliFunctions() {

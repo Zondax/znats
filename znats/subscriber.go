@@ -12,12 +12,12 @@ type SubscriberNats struct {
 	Subscription *nats.Subscription
 }
 
-func (c *ComponentNats) AddQueuedSubscriber(topicName string, cb nats.MsgHandler, opts ...nats.SubOpt) (error, SubscriberNats) {
+func (c *ComponentNats) AddQueuedSubscriber(topicName string, cb nats.MsgHandler, opts ...nats.SubOpt) (SubscriberNats, error) {
 	// Get input topic
-	err, topic := c.GetInputTopic(topicName)
+	topic, err := c.GetInputTopic(topicName)
 	if err != nil {
 		zap.S().Errorf("failed to get input topic: %s", topicName)
-		return err, SubscriberNats{}
+		return SubscriberNats{}, err
 	}
 
 	queue := getSubscriberQueueName(topic)
@@ -29,18 +29,18 @@ func (c *ComponentNats) AddQueuedSubscriber(topicName string, cb nats.MsgHandler
 
 	subscription, err := c.JsContext.QueueSubscribe(topicFullName, queue, cb, opts...)
 
-	return err, SubscriberNats{
+	return SubscriberNats{
 		Topic:        topic,
 		Subscription: subscription,
-	}
+	}, err
 }
 
-func (c *ComponentNats) AddQueuedPullSubscriber(topicName string, cb nats.MsgHandler, pullTime time.Duration, opts ...nats.SubOpt) (error, SubscriberNats) {
+func (c *ComponentNats) AddQueuedPullSubscriber(topicName string, cb nats.MsgHandler, pullTime time.Duration, opts ...nats.SubOpt) (SubscriberNats, error) {
 	// Get input topic
-	err, topic := c.GetInputTopic(topicName)
+	topic, err := c.GetInputTopic(topicName)
 	if err != nil {
 		zap.S().Errorf("failed to get input topic: %s", topicName)
-		return err, SubscriberNats{}
+		return SubscriberNats{}, err
 	}
 
 	queue := getSubscriberQueueName(topic)
@@ -52,7 +52,7 @@ func (c *ComponentNats) AddQueuedPullSubscriber(topicName string, cb nats.MsgHan
 
 	subscription, err := c.JsContext.PullSubscribe(topicFullName, queue, opts...)
 	if err != nil {
-		return err, SubscriberNats{}
+		return SubscriberNats{}, err
 	}
 
 	go func() {
@@ -77,18 +77,18 @@ func (c *ComponentNats) AddQueuedPullSubscriber(topicName string, cb nats.MsgHan
 		}
 	}()
 
-	return nil, SubscriberNats{
+	return SubscriberNats{
 		Topic:        topic,
 		Subscription: subscription,
-	}
+	}, nil
 }
 
-func (c *ComponentNats) AddSubscriber(topicName string, cb func(*nats.Msg), opts ...nats.SubOpt) (error, SubscriberNats) {
+func (c *ComponentNats) AddSubscriber(topicName string, cb func(*nats.Msg), opts ...nats.SubOpt) (SubscriberNats, error) {
 	// Get input topic
-	err, topic := c.GetInputTopic(topicName)
+	topic, err := c.GetInputTopic(topicName)
 	if err != nil {
 		zap.S().Errorf("failed to get input topic: %s", topicName)
-		return err, SubscriberNats{}
+		return SubscriberNats{}, err
 	}
 
 	topicFullName := topic.FullRoute()
@@ -99,10 +99,10 @@ func (c *ComponentNats) AddSubscriber(topicName string, cb func(*nats.Msg), opts
 		cb(msg)
 	}, opts...)
 
-	return err, SubscriberNats{
+	return SubscriberNats{
 		Topic:        topic,
 		Subscription: subscription,
-	}
+	}, err
 }
 
 func getSubscriberConsumerName(topic *Topic) string {
