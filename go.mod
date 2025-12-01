@@ -5,7 +5,7 @@ go 1.24.4
 require (
 	github.com/nats-io/nats.go v1.47.0
 	github.com/spf13/viper v1.19.0
-	go.uber.org/zap v1.27.0
+	go.uber.org/zap v1.27.1
 	gotest.tools v2.2.0+incompatible
 )
 
