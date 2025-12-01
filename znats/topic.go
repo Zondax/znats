@@ -70,7 +70,7 @@ func (c *ComponentNats) AddOutputTopic(topic *Topic) {
 		return
 	}
 
-	c.OutputTopics[topic.CommonResourceProperties.NameHandle] = topic
+	c.OutputTopics[topic.NameHandle] = topic
 }
 
 func (c *ComponentNats) GetInputTopic(name string) (*Topic, error) {
@@ -117,13 +117,13 @@ func (c *ComponentNats) GetOutputTopicsFullNames() []string {
 // Format: <category>.<prefix_1>...<prefix_n>.<subject>.<subsubject>
 func (t *Topic) build(config *TopicConfig) {
 	p := GetResourcePrefix(config.Prefixes, config.Category, Dot)
-	t.CommonResourceProperties.fullName = fmt.Sprintf("%s%s", p, config.Subject)
+	t.fullName = fmt.Sprintf("%s%s", p, config.Subject)
 	if config.SubSubject != "" {
-		t.CommonResourceProperties.fullName += fmt.Sprintf(".%s", config.SubSubject)
+		t.fullName += fmt.Sprintf(".%s", config.SubSubject)
 	}
 
 	// Set default name if not set
-	if t.CommonResourceProperties.NameHandle == "" {
-		t.CommonResourceProperties.NameHandle = t.CommonResourceProperties.fullName
+	if t.NameHandle == "" {
+		t.NameHandle = t.fullName
 	}
 }
