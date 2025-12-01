@@ -1,6 +1,6 @@
 module github.com/zondax/znats
 
-go 1.20
+go 1.24.4
 
 require (
 	github.com/nats-io/nats.go v1.36.0

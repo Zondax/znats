@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func (c *ComponentNats) SendRequest(topic *Topic, data []byte, reqRetry int, reqTimeout time.Duration, waitInterval time.Duration) (error, []byte) {
+func (c *ComponentNats) SendRequest(topic *Topic, data []byte, reqRetry int, reqTimeout time.Duration, waitInterval time.Duration) ([]byte, error) {
 	var out []byte
 	for i := 0; i < reqRetry; i++ {
 		response, err := c.NatsConn.Request(topic.FullRoute(), data, reqTimeout)
@@ -17,7 +17,7 @@ func (c *ComponentNats) SendRequest(topic *Topic, data []byte, reqRetry int, req
 				time.Sleep(waitInterval)
 				continue
 			} else {
-				return err, nil
+				return nil, err
 			}
 		}
 
@@ -25,10 +25,10 @@ func (c *ComponentNats) SendRequest(topic *Topic, data []byte, reqRetry int, req
 		break
 	}
 
-	return nil, out
+	return out, nil
 }
 
-func (c *ComponentNats) WaitTopicAndSendRequest(topic *Topic, data []byte, reqRetry int, reqTimeout time.Duration, sleepInterval time.Duration) (error, []byte) {
+func (c *ComponentNats) WaitTopicAndSendRequest(topic *Topic, data []byte, reqRetry int, reqTimeout time.Duration, sleepInterval time.Duration) ([]byte, error) {
 	c.WaitForTopicToExist(topic)
 	return c.SendRequest(topic, data, reqRetry, reqTimeout, sleepInterval)
 }
