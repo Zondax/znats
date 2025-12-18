@@ -3,7 +3,7 @@ module github.com/zondax/znats
 go 1.24.4
 
 require (
-	github.com/nats-io/nats.go v1.47.0
+	github.com/nats-io/nats.go v1.48.0
 	github.com/spf13/viper v1.21.0
 	go.uber.org/zap v1.27.1
 	gotest.tools v2.2.0+incompatible
