@@ -13,7 +13,7 @@ jobs:
   checks:
     runs-on: zondax-runners
     container:
-      image: golang:1.21
+      image: golang:1.24.4
       options: --tty
 
     steps:
